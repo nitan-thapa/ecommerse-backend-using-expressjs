@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser=require('body-parser')
 const db=require('./db/database')
 const categoryRoute = require('./routes/categoryRoute')
+const productRoute = require('./routes/productRoute')
 
 const app = express()
 
@@ -17,6 +18,7 @@ app.use(morgan('dev'))
 
 //routes 
 app.use('/api',categoryRoute);
+app.use('/api',productRoute);
 
 
 const port = process.env.PORT || 5000
