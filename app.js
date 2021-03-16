@@ -3,6 +3,7 @@ require('dotenv').config()
 const morgan = require('morgan');
 const bodyParser=require('body-parser')
 const db=require('./db/database')
+const expressValidator=require('express-validator')
 const categoryRoute = require('./routes/categoryRoute')
 const productRoute = require('./routes/productRoute')
 
@@ -13,8 +14,9 @@ const app = express()
 // })
 
 //Middleware
-app.use(bodyParser.json())
-app.use(morgan('dev'))
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+app.use(expressValidator());
 
 //routes 
 app.use('/api',categoryRoute);
