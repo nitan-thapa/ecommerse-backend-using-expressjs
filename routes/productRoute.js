@@ -1,5 +1,5 @@
 const express = require('express');
-const { postProduct } = require('../controller/product');
+const { postProduct, getAllProducts } = require('../controller/product');
 const { productValidation } = require('../validation');
 const router = express.Router();
 
@@ -7,6 +7,7 @@ const router = express.Router();
 //Routes
 
 router.post('/postproduct',productValidation, postProduct)
+router.get('/getproduct', getAllProducts)
 
 
 

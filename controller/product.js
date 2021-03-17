@@ -1,4 +1,5 @@
 const Product=require('../models/productModel')
+const { productValidation } = require('../validation')
 
 //To post product
 exports.postProduct=(req,res)=>{
@@ -18,4 +19,16 @@ exports.postProduct=(req,res)=>{
             res.json({products})
     })
 
+}
+
+//To get All Product
+exports.getAllProducts=(req,res)=>{
+    Product.find()
+    .populate('category','category_name')
+    .exec((error,products)=>{
+        if(error || !products){
+            return res.json({error:'products not found'})
+        }
+        res.json({products})
+    })
 }

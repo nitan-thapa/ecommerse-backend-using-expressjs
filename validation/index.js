@@ -16,7 +16,7 @@ exports.productValidation=(req,res,next)=>{
     const errors=req.validationErrors()
     if(errors){
         const showErrors=errors.map(error=>error.msg)[0]
-        return res.status(400).json({showErrors})
+        return res.status(400).json({error:showErrors})
     }
     next();
 }
