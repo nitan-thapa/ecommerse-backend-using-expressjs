@@ -32,3 +32,24 @@ exports.getAllProducts=(req,res)=>{
         res.json({products})
     })
 }
+
+//Single product by ID
+
+exports.productById=(req, res, next, id)=>{
+    Product.findById(id)
+    .populate('category','category_name')
+    .exec((error,product)=>{
+        if(error || !product){
+            return res.status(400).json({error:"Product not found"})
+        }
+        req.product=product
+        next(); 
+    })
+}
+
+
+exports.readProduct=(req,res)=>{
+    return res.json(req.product)
+ }
+
+
