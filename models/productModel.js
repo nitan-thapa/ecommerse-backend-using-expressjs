@@ -29,6 +29,13 @@ const productSchema = new mongoose.Schema({
         ref:'Category'
     },
 
+    product_image:{
+        type: String,
+        require: true,
+        trim: true,
+
+    },
+
     product_description:{
         type: String,
         require:true,

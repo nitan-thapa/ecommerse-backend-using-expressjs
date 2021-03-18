@@ -9,6 +9,7 @@ exports.postProduct=(req,res)=>{
         product_price:req.body.product_price,
         product_quantity:req.body.product_quantity,
         category:req.body.category,
+        product_image:req.file.path,
         product_description: req.body.product_description,
         product_rating: req.body.product_rating
     })
@@ -47,9 +48,9 @@ exports.productById=(req, res, next, id)=>{
     })
 }
 
-
 exports.readProduct=(req,res)=>{
     return res.json(req.product)
  }
 
+ 
 
