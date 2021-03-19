@@ -6,6 +6,7 @@ const db=require('./db/database')
 const expressValidator=require('express-validator')
 const categoryRoute = require('./routes/categoryRoute')
 const productRoute = require('./routes/productRoute')
+const userRoute = require('./routes/userRoute')
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.use(expressValidator());
 //routes 
 app.use('/api',categoryRoute);
 app.use('/api',productRoute);
+app.use('/api',userRoute);
 
 
 const port = process.env.PORT || 5000
