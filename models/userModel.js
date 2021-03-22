@@ -10,7 +10,7 @@ const userSchema= new mongoose.Schema({
         trim: true,
 
     },
-    emai:{
+    email:{
         type: String,
         require: true,
         unique: true,
@@ -54,6 +54,9 @@ userSchema.methods={
             return ''
 
         }
+    },
+    authenticate:function(plainText){
+        return this.encrypytPassword(plainText)==this.hashed_password
     }
 
 }

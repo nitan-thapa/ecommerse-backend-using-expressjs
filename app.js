@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config()
 const morgan = require('morgan');
 const bodyParser=require('body-parser')
+const cookieParser=require('cookie-parser');
 const db=require('./db/database')
 const expressValidator=require('express-validator')
 const categoryRoute = require('./routes/categoryRoute')
@@ -17,6 +18,7 @@ const app = express()
 //Middleware
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+app.use(cookieParser());
 app.use(expressValidator());
 
 //routes 

@@ -20,3 +20,9 @@ exports.productValidation=(req,res,next)=>{
     }
     next();
 }
+
+
+exports.signInValidation=(req,res,next)=>{
+    req.check('email','Email is required').notEmpty();
+    req.check('password','Password is required').notEmpty();
+}
