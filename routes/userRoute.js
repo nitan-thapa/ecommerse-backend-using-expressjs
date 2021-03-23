@@ -1,11 +1,15 @@
 const express = require('express');
-const { postUser, signin } = require('../controller/user');
-const { signInValidation } = require('../validation');
+const { postUser, signin, signout, userDetails, UserById, requireSignIn } = require('../controller/user');
+const { signUpValidation } = require('../validation');
 const router = express.Router();
 
 
-router.post('/postuser',postUser)
-router.post('/signin',signInValidation,signin)
+router.post('/postuser',signUpValidation,postUser)
+router.post('/signin',signin)
+router.post('/signout',signout)
+
+router.param('userId',UserById)
+router.get('/userdetails/:userId',requireSignIn,userDetails)
 
 
 

@@ -22,7 +22,21 @@ exports.productValidation=(req,res,next)=>{
 }
 
 
-exports.signInValidation=(req,res,next)=>{
-    req.check('email','Email is required').notEmpty();
-    req.check('password','Password is required').notEmpty();
+exports.signUpValidation=(req,res,next)=>{
+    req.check('name','Name is required').notEmpty();
+    req.check('email','Email is required').notEmpty()
+    .isEmail()
+    .withMessage('Invalid Email ID')
+    req.check('password','Password is required').notEmpty()
+    .isLength({
+        min:6
+    })
+    .withMessage('password must be more than 6 characters.')
+
+    const errors=req.validationErrors()
+    if (errors){
+        const showErrors=errors.map(error=>error.msg) [0]
+        return res.status(400).json({error:showErrors})
+    }
+    next();
 }

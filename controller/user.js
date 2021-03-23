@@ -1,7 +1,9 @@
 const User=require('../models/userModel')
+const { signUpValidation } = require('../validation')
 
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
+const { Router } = require('express')
 
 exports.postUser=(req,res)=>{
     let user = new User(req.body)
@@ -41,4 +43,37 @@ exports.signin=(req,res)=>{
         res.json({token,user:{id,name,email}})
 
     })
+}
+
+//For Signout 
+
+exports.signout=(req,res)=>{
+    res.clearCookie('t');
+    res.json({message:"Signout Success"})
+}
+
+
+//Authorization
+
+exports.requireSignIn=expressJwt({
+    secret:process.env.JWT_SECRET,
+    algorithms:['HS256'],
+    userProperty:"auth"
+})
+
+
+//Find User by id
+exports.UserById=(req,res,next,id)=>{
+    User.findById(id).exec((error,user)=>{
+        if (error || !user){
+            return res.status(400).json({error:"User Not Found"})
+        }
+        req.profile=user;
+        next();
+    })
+}
+
+// to show single user
+exports.userDetails=(req,res)=>{
+    res.json(req.profile)
 }
