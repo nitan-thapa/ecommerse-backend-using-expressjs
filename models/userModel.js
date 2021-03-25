@@ -24,6 +24,10 @@ const userSchema= new mongoose.Schema({
     hashed_password:{
         type:String,
         required:true,
+    },
+    isVerified:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true})
 

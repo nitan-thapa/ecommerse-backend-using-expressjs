@@ -1,9 +1,13 @@
 const User=require('../models/userModel')
 const { signUpValidation } = require('../validation')
+const Token=require('../models/token')
+const crypto=require('crypto')
+const sendEmail=require('../utils/verifyEmail')
 
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
-const { Router } = require('express')
+const { request } = require('http')
+
 
 exports.postUser=(req,res)=>{
     let user = new User(req.body)
@@ -11,6 +15,26 @@ exports.postUser=(req,res)=>{
         if (error || !users){
             return res.status(400).json({error:'something went wrong'})
         }
+
+        const token=new Token({
+            userId:users._id,
+            token:crypto.randomBytes(16).toString('hex')
+
+        })
+        token.save((error,token)=>{
+            if(error || !token){
+                return res.status(400).json({error:error})
+            }
+            sendEmail({
+                to:users.email,
+                form:'no-reply@myecommerceapp.com',
+                subject:'Email Verification Link',
+                text:'Hello,'+user.email+',\n\n'+'Please Verify your account by clicking the link below link: \n\nhttp:\/\/'+req.headers.host+'\/api\/confirmation\/'+token.token
+            })
+            
+        })
+            
+
         res.json({users})
     })
 }
@@ -30,6 +54,12 @@ exports.signin=(req,res)=>{
 
         if (!user.authenticate(password)){
             return res.status(400).json({error:"Email and password doesnot match"})
+        }
+
+        //Check is email is verified
+
+        if(!user.isVerified){
+            return res.status(400).json({error:"Please verify your account before login"})
         }
 
         //assign token to signin user with user id and jwt secret 
@@ -76,4 +106,19 @@ exports.UserById=(req,res,next,id)=>{
 // to show single user
 exports.userDetails=(req,res)=>{
     res.json(req.profile)
+}
+
+exports.isAuth=(req,res,next)=>{
+    let user=req.profile && req.auth && req.profile._id==req.auth._id
+    if(!user){
+        res.status(403).json({error:"You are not authorised to access this page"})
+    }
+    next();
+}
+
+exports.isAdmin=(req,res,next)=>{
+    if(req.profile.role===0){
+        return res.status(403).json({error:"This is admin resource, you are not authorised."})
+    }
+    next()
 }
