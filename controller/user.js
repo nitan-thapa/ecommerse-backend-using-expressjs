@@ -153,3 +153,34 @@ exports.confirmationEmail=(req,res)=>{
 
     })
 }
+
+//resend email confirmation
+exports.resendConfirmationToken=(req,res)=>{
+    //find the valid user
+    User.findOne({email:req.body.email},(error,user)=>{
+           if (error || !user){
+               return res.status(400).json({error:"Sorry the email provided is not found in our system"})
+           }
+           if(user.isVerified){
+               return res.status(400).json({error:"The email is already verified please login to continue"})
+           }
+
+           const token=new Token({
+               userId:user._id,
+               token:crypto.randomBytes(16).toString('hex')
+           })
+           token.save((error,token)=>{
+               if (error || !token){
+                   return res.status(400).json({error:error})
+               }
+               sendEmail({
+                   to:user.email,
+                   form:'no-reply@myecommerceapp.com',
+                   subject:'Email Verification Link',
+                   text:'Hello,'+user.email+',\n\n'+'Please Verify your account by clicking the link below link: \n\nhttp:\/\/'+req.headers.host+'\/api\/confirmation\/'+token.token
+               })
+
+           })
+           res.json({message:"confirmation token have been sent"})
+    })
+}

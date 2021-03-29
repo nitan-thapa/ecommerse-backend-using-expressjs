@@ -1,5 +1,5 @@
 const express = require('express');
-const { postUser, signin, signout, userDetails, UserById, requireSignIn, isAuth, confirmationEmail } = require('../controller/user');
+const { postUser, signin, signout, userDetails, UserById, requireSignIn, isAuth, confirmationEmail, resendConfirmationToken } = require('../controller/user');
 const { signUpValidation } = require('../validation');
 const router = express.Router();
 
@@ -12,6 +12,7 @@ router.param('userId',UserById)
 router.get('/userdetails/:userId',userDetails)
 
 router.post('/confirmation/:token',confirmationEmail);
+router.post('/resendtoken',resendConfirmationToken);
 
 
 
