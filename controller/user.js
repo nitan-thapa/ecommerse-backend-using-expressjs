@@ -122,3 +122,34 @@ exports.isAdmin=(req,res,next)=>{
     }
     next()
 }
+
+exports.confirmationEmail=(req,res)=>{
+    //at first find the matching token
+    Token.findOne({token:req.params.token},(error,token)=>{
+        if(error || !token){
+            return res.status(400).json({error:"Invalid Token or Token may have expired"})
+        }
+        //if we found the valid token then find the valid user.
+        User.findOne({_id:token.userId,email:req.body.email},(error,user)=>{
+            if(error || !user){
+                return res.status(400).json({error:"sorry the email you provided is not associated with this token"})
+            }
+            //check if user is already verified
+        if(user.isVerified){
+            return res.status(400).json({error:"This user is already verified"})
+        }
+
+        //Now verify the user and save the user
+        user.isVerified=true
+        user.save((error)=>{
+            if (error){
+                return res.status(400).json({error})
+            }
+            else{
+                return res.status(200).json({message:"congrats your account is verified you can login to continue"})
+            }
+        })
+        })
+
+    })
+}

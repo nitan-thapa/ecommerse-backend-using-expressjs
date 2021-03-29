@@ -16,4 +16,5 @@ router.param('productId',productById)
 router.get('/singleproduct/:productId',readProduct)
 
 
+
 module.exports=router;
