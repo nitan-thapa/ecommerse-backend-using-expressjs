@@ -184,3 +184,33 @@ exports.resendConfirmationToken=(req,res)=>{
            res.json({message:"confirmation token have been sent"})
     })
 }
+
+
+//reset password token
+
+exports.resetPasswordToken=(req,res)=>{
+    //Find the valid user
+    User.findOne({email:req.body.email},(error,user)=>{
+        if (error || !user){
+            return res.status(400).json({error:"Sorry the email provided is not found in our system"})
+        }
+
+        const token=new Token({
+            userId:user._id,
+            token:crypto.randomBytes(16).toString('hex')
+        })
+        token.save((error,token)=>{
+            if (error || !token){
+                return res.status(400).json({error:error})
+            }
+            sendEmail({
+                to:user.email,
+                form:'no-reply@myecommerceapp.com',
+                subject:'Password Reset Link',
+                text:'Hello,'+user.email+',\n\n'+'Please Verify your account by clicking the link below link: \n\nhttp:\/\/'+req.headers.host+'\/api\/resetpassword\/'+token.token
+            })
+
+        })
+        res.json({message:"resetpassword token have been sent"})
+    })
+    }

@@ -21,17 +21,6 @@ createdAt:{
 })
 
 
-//resend email confirmation
- exports.resendConfirmationToken=(req,res)=>{
-     //find the valid user
-     User.findOne({email:rec.body.email},(errror,user)=>{
-            if (error || !user){
-                return res.status(400).json({error:"Sorry the email provided is not found in our system"})
-            }
-            if(user.isVerified){
-                return res.status(400).json({error:"The email is already verified please login to continue"})
-            }
-     })
- }
+
 
 module.exports=mongoose.model('Token',tokenSchema)
