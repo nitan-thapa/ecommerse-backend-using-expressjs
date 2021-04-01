@@ -8,6 +8,8 @@ const expressValidator=require('express-validator')
 const categoryRoute = require('./routes/categoryRoute')
 const productRoute = require('./routes/productRoute')
 const userRoute = require('./routes/userRoute')
+const orderRoute = require('./routes/orderRoute')
+
 
 const app = express()
 
@@ -25,6 +27,7 @@ app.use(expressValidator());
 app.use('/api',categoryRoute);
 app.use('/api',productRoute);
 app.use('/api',userRoute);
+app.use('/api',orderRoute);
 
 
 const port = process.env.PORT || 5000

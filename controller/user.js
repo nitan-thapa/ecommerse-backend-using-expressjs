@@ -6,7 +6,7 @@ const sendEmail=require('../utils/verifyEmail')
 
 const jwt=require('jsonwebtoken')
 const expressJwt=require('express-jwt')
-const { request } = require('http')
+const { resourceUsage } = require('process')
 
 
 exports.postUser=(req,res)=>{
@@ -213,4 +213,36 @@ exports.resetPasswordToken=(req,res)=>{
         })
         res.json({message:"resetpassword token have been sent"})
     })
+    }
+
+
+    //Change Password
+
+    exports.changePassword=(req,res)=>{
+        Token.findOne({token:req.params.token},(error,token)=>{
+            if(error || !token){
+                return res.status(400).json({error:"Invalid Token or Token may have expired"})
+            }
+        
+               //if we found the valid token then find the valid user.
+        User.findOne({_id:token.userId,email:req.body.email},(error,user)=>{
+            if(error || !user){
+                return res.status(400).json({error:"sorry the email you provided is not associated with this token"})
+            }
+
+          user.password=req.body.password
+          user.save((error,result)=>{
+              if(error || !result){
+                return res.status(400).json({error})
+            }
+            else{
+                return res.status(200).json({message:"Password has been reset successfully"})
+            }
+          })
+
+        })
+    })
+
+
+
     }

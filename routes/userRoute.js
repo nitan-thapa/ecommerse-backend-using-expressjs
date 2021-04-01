@@ -1,5 +1,5 @@
 const express = require('express');
-const { postUser, signin, signout, userDetails, UserById, requireSignIn, isAuth, confirmationEmail, resendConfirmationToken, resetPasswordToken } = require('../controller/user');
+const { postUser, signin, signout, userDetails, UserById, requireSignIn, isAuth, confirmationEmail, resendConfirmationToken, resetPasswordToken, changePassword } = require('../controller/user');
 const { signUpValidation } = require('../validation');
 const router = express.Router();
 
@@ -13,7 +13,8 @@ router.get('/userdetails/:userId',userDetails)
 
 router.post('/confirmation/:token',confirmationEmail);
 router.post('/resendtoken',resendConfirmationToken);
-router.post('/resetpassword',resetPasswordToken)
+router.post('/resetpassword',resetPasswordToken);
+router.put('/resetpassword/:token',changePassword);
 
 
 
