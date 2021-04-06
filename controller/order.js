@@ -42,3 +42,38 @@ exports.postOrder=async(req,res)=>{
     res.json({order})
 
 }
+
+//to show all order
+exports.getOrderList=(req,res)=>{
+    Order.find().sort({orderDate:-1}).exec((error,order)=>{
+        if(error || !order){
+            return res.status(400).json({error:"no order found"})
+        } 
+        res.json({order})
+    })
+}
+
+
+//to show single order
+exports.getOrder=(req,res)=>{
+    Order.findOne(req.params.id).exec((error,order)=>{
+        if(error || !order){
+            return res.status(400).json({error:error})
+        }
+        res.json({order})
+    })
+}
+//To update Status
+exports.updateStatus=(req,res)=>{
+
+    const order=Order.findByIdAndUpdate(
+        req.params.id,
+        {status:req.body.status},
+        {new:true}
+
+        )
+        if(!order){
+            return res.status(400).json({error:"Failed to Update"})
+        }
+        res.json({message:"Status Updated"})
+}
