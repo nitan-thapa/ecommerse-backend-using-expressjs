@@ -9,6 +9,7 @@ const categoryRoute = require('./routes/categoryRoute')
 const productRoute = require('./routes/productRoute')
 const userRoute = require('./routes/userRoute')
 const orderRoute = require('./routes/orderRoute')
+const cors=require('cors')
 
 
 const app = express()
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(expressValidator());
+app.use(cors());
 
 //routes 
 app.use('/api',categoryRoute);
