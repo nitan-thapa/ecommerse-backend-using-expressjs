@@ -227,7 +227,7 @@ exports.confirmationEmail=(req,res)=>{
             return res.status(400).json({error:"Invalid Token or Token may have expired"})
         }
         //if we found the valid token then find the valid user.
-        User.findOne({_id:token.userId,email:req.body.email},(error,user)=>{
+        User.findOne({_id:token.userId},(error,user)=>{
             if(error || !user){
                 return res.status(400).json({error:"sorry the email you provided is not associated with this token"})
             }
