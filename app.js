@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(expressValidator());
+app.use('/public/uploads',express.static('public/uploads'));
 app.use(cors());
 
 //routes 

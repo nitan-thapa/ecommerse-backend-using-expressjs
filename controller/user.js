@@ -166,8 +166,8 @@ exports.signin=(req,res)=>{
         //cookie
         res.cookie('t',token,{expire:Date.now()+99999})
 
-        const{id,name,email,role}=user
-        res.json({token,user:{id,name,email,role}})
+        const{_id,name,email,role}=user
+        res.json({token,user:{_id,name,email,role}})
 
     })
 }

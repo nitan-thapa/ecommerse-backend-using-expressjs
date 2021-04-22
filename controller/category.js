@@ -7,7 +7,7 @@ const Category=require('../models/categoryModel');
 //To insert Data
 exports.postCategory=(req,res)=>{
     let category = new Category({
-        category_name:req.body.category
+        category_name:req.body.category_name
     })
 
     Category.findOne({category_name:category.category_name},(error,data)=>{
@@ -80,7 +80,7 @@ exports.findCategory=(req,res)=>{
      if (error || !data){
          return res.status(400).json({error:"Category Not Found"})
      }
-     res.json({data})
+     res.json(data)
     
     })
 
