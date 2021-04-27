@@ -66,3 +66,21 @@ exports.readProduct=(req,res)=>{
 
  
 
+ //get related products
+
+ exports.listRelated=(req,res)=>{
+     let limit=req.query.limit ? parseInt(req.query.limit):6
+
+     Product.find({_id:{$ne:req.product},category:req.product.category})
+     .limit(limit)
+     .populate('category','category_name')
+     .exec((err,products)=>{
+         if(err){
+            return res.status(400).json({
+                error:'Products not found'
+            });
+         }
+         res.json(products);
+     });
+ };
+
