@@ -129,3 +129,28 @@ exports.readProduct=(req,res)=>{
             });
         });
 };
+
+
+//to search product
+exports.listSearch=(req,res)=>{
+    //create query object to hold search value and category value
+    const query={}
+    //assign search value to query.name
+    if(req.query.search){
+        query.product_name={$regex:req.query.search,$options:'i'}
+        //assign category value to query.category
+        if(req.query.category && req.query.category !='All'){
+            query.category=req.query.category
+        }
+        //find the product based on query object with 2 properties
+        //search and category
+        Product.find(query,(error,products)=>{
+           if(error){
+               return res.status(400).json({
+                   error:error
+               })
+           }
+           res.json(products);
+        })
+    }
+};

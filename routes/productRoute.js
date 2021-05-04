@@ -1,5 +1,5 @@
 const express = require('express');
-const { postProduct, getAllProducts, readProduct, productById, listRelated, listBySearch } = require('../controller/product');
+const { postProduct, getAllProducts, readProduct, productById, listRelated, listBySearch, listSearch } = require('../controller/product');
 const { productValidation } = require('../validation');
 const upload= require('../middleware/file-upload');
 const { requireSignIn, isAdmin, UserById } = require('../controller/user');
@@ -19,6 +19,8 @@ router.get('/singleproduct/:productId',readProduct)
 router.get('/products/related/:productId', listRelated)
 
 router.post('/products/by/search',listBySearch)
+
+router.get('/products/search',listSearch)
 
 router.param('userId',UserById)
 
